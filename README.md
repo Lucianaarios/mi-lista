@@ -1,59 +1,55 @@
-# MiLista
+ Agenda Diaria
+Una aplicación web moderna para organizar tu día, construida con Angular. Permite planificar actividades por hora y llevar un control de tu progreso diario.
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.17.
+✨ Características
+Planificación de actividades por hora específica
 
-## Development server
+Sistema de categorías (trabajo, estudio, salud, etc.)
 
-To start a local development server, run:
+Niveles de prioridad (alta, media, baja)
 
-```bash
+Seguimiento de progreso del día
+
+Diseño responsive y moderno
+
+Estadísticas en tiempo real
+
+🚀 Tecnologías
+Angular 17+
+
+TypeScript
+
+CSS3
+
+HTML5
+
+📦 Instalación
+bash
+# Clonar el repositorio
+git clone https://github.com/Lucianaarios/mi-lista.git
+
+# Instalar dependencias
+npm install
+
+# Ejecutar servidor
 ng serve
-```
+La aplicación estará disponible en http://localhost:4200
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+🎯 Uso
+Agregar actividades: Completa hora, título, categoría y descripción
 
-## Code scaffolding
+Organizar: Las actividades se ordenan automáticamente por hora
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Seguimiento: Marca actividades como completadas y revisa tu progreso
 
-```bash
-ng generate component component-name
-```
+📝 Comandos
+bash
+# Desarrollo
+ng serve
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
+# Build producción
 ng build
-```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
+# Tests
 ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Desarrollado con Angular - Ver repositorio
