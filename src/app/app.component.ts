@@ -41,15 +41,6 @@ export class AppComponent {
       prioridad: 'alta' 
     },
     { 
-      id: 3, 
-      hora: '11:00', 
-      titulo: 'Trabajo en proyecto Angular', 
-      descripcion: 'Desarrollar nuevas funcionalidades',
-      completado: false, 
-      categoria: 'trabajo', 
-      prioridad: 'media' 
-    },
-    { 
       id: 4, 
       hora: '13:00', 
       titulo: 'Almuerzo y descanso', 
@@ -57,15 +48,6 @@ export class AppComponent {
       completado: false, 
       categoria: 'salud', 
       prioridad: 'media' 
-    },
-    { 
-      id: 5, 
-      hora: '15:00', 
-      titulo: 'Estudiar nuevo framework', 
-      descripcion: 'Aprender sobre Angular avanzado',
-      completado: false, 
-      categoria: 'estudio', 
-      prioridad: 'baja' 
     },
     { 
       id: 6, 

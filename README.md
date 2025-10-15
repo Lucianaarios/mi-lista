@@ -52,4 +52,3 @@ ng build
 
 # Tests
 ng test
-Desarrollado con Angular - Ver repositorio
