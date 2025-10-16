@@ -1,0 +1,68 @@
+### Test API - Agenda Diaria
+### Puedes usar este archivo con la extensión REST Client de VSCode
+
+### 1. Verificar que el servidor está corriendo
+GET http://localhost:3000
+
+### 2. Obtener todas las actividades
+GET http://localhost:3000/api/agenda
+
+### 3. Obtener una actividad específica (ID 1)
+GET http://localhost:3000/api/agenda/1
+
+### 4. Crear nueva actividad
+POST http://localhost:3000/api/agenda
+Content-Type: application/json
+
+{
+  "hora": "15:30",
+  "titulo": "Reunión con cliente",
+  "descripcion": "Presentación del proyecto final",
+  "categoria": "trabajo",
+  "prioridad": "alta"
+}
+
+### 5. Actualizar actividad (cambiar a completado)
+PUT http://localhost:3000/api/agenda/1
+Content-Type: application/json
+
+{
+  "completado": true
+}
+
+### 6. Actualizar actividad completa
+PUT http://localhost:3000/api/agenda/2
+Content-Type: application/json
+
+{
+  "hora": "10:00",
+  "titulo": "Reunión de equipo actualizada",
+  "descripcion": "Nueva descripción",
+  "categoria": "trabajo",
+  "prioridad": "media"
+}
+
+### 7. Eliminar actividad
+DELETE http://localhost:3000/api/agenda/7
+
+### 8. Probar validación (debe fallar - hora inválida)
+POST http://localhost:3000/api/agenda
+Content-Type: application/json
+
+{
+  "hora": "25:00",
+  "titulo": "Test validación",
+  "categoria": "trabajo",
+  "prioridad": "media"
+}
+
+### 9. Probar validación (debe fallar - categoría inválida)
+POST http://localhost:3000/api/agenda
+Content-Type: application/json
+
+{
+  "hora": "14:00",
+  "titulo": "Test validación",
+  "categoria": "invalida",
+  "prioridad": "media"
+}

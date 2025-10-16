@@ -1,14 +1,72 @@
+<!-- Navbar -->
+<nav class="navbar">
+  <div class="navbar-container">
+    <div class="navbar-brand">
+      <lucide-icon [img]="Calendar" [size]="28"></lucide-icon>
+      <span class="navbar-title">Agenda Diaria</span>
+    </div>
+    <div class="navbar-menu">
+      <button class="navbar-btn" title="Inicio">
+        <lucide-icon [img]="Home" [size]="20"></lucide-icon>
+        <span>Inicio</span>
+      </button>
+      <button class="navbar-btn" (click)="abrirModal()" title="Nueva Actividad">
+        <lucide-icon [img]="Plus" [size]="20"></lucide-icon>
+        <span>Nueva</span>
+      </button>
+      <button class="navbar-btn" title="Configuración">
+        <lucide-icon [img]="Settings" [size]="20"></lucide-icon>
+      </button>
+      <button class="navbar-btn" title="Perfil">
+        <lucide-icon [img]="User" [size]="20"></lucide-icon>
+      </button>
+    </div>
+  </div>
+</nav>
+
 <div class="container">
+  <!-- Toast Notification -->
+  <div *ngIf="toastMessage" class="toast" [class.toast-success]="toastType === 'success'"
+       [class.toast-error]="toastType === 'error'" [class.toast-info]="toastType === 'info'">
+    <span class="toast-icon">
+      <lucide-icon *ngIf="toastType === 'success'" [img]="CheckCircle" [size]="20"></lucide-icon>
+      <lucide-icon *ngIf="toastType === 'error'" [img]="AlertCircle" [size]="20"></lucide-icon>
+      <lucide-icon *ngIf="toastType === 'info'" [img]="Info" [size]="20"></lucide-icon>
+    </span>
+    <span class="toast-text">{{ toastMessage }}</span>
+    <button (click)="closeToast()" class="toast-close">
+      <lucide-icon [img]="X" [size]="18"></lucide-icon>
+    </button>
+  </div>
+
   <!-- Header -->
   <header class="header">
     <div class="header-content">
-      <h1>{{ title }}</h1>
+      <div class="header-title">
+        <h1>{{ title }}</h1>
+      </div>
       <p class="subtitle">Organiza tu día hora por hora</p>
     </div>
-   <div class="date-display">
-  {{ getCurrentDate() }}
-</div>
+    <div class="date-display">
+      <lucide-icon [img]="CalendarDays" [size]="18"></lucide-icon>
+      <span>{{ getCurrentDate() }}</span>
+    </div>
   </header>
+
+  <!-- Loading Indicator -->
+  <div *ngIf="cargando" class="loading-container">
+    <div class="loading-spinner"></div>
+    <p>Cargando actividades...</p>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="error" class="error-message">
+    <span>
+      <lucide-icon [img]="AlertCircle" [size]="20"></lucide-icon>
+      {{ error }}
+    </span>
+    <button (click)="cargarItems()" class="retry-btn">Reintentar</button>
+  </div>
 
   <!-- Estadísticas Rápidas -->
   <div class="stats-container">
@@ -32,12 +90,19 @@
 
   <!-- Próxima Actividad -->
   <div class="next-activity" *ngIf="proximaTarea">
-    <div class="next-badge">👉 Próxima actividad</div>
+    <div class="next-badge">
+      <lucide-icon [img]="Play" [size]="16"></lucide-icon>
+      Próxima actividad
+    </div>
     <div class="next-card">
-      <span class="next-time">{{ proximaTarea.hora }}</span>
+      <div class="next-time">
+        <lucide-icon [img]="Clock" [size]="28"></lucide-icon>
+        <span>{{ proximaTarea.hora }}</span>
+      </div>
       <div class="next-info">
         <strong>{{ proximaTarea.titulo }}</strong>
         <span class="next-category" [style.background-color]="getColorCategoria(proximaTarea.categoria)">
+          <lucide-icon [img]="getIconoCategoria(proximaTarea.categoria)" [size]="14"></lucide-icon>
           {{ proximaTarea.categoria }}
         </span>
       </div>
@@ -69,64 +134,23 @@
     </div>
   </div>
 
-  <!-- Formulario para Nueva Actividad -->
+  <!-- Botón para abrir modal -->
   <div class="add-section">
-    <div class="form-card">
-      <h3>➕ Nueva Actividad</h3>
-      <div class="form-grid">
-        <div class="form-group">
-          <label>Hora:</label>
-          <input 
-            type="time" 
-            [(ngModel)]="nuevoItem.hora" 
-            class="time-input"
-          >
-        </div>
-        <div class="form-group">
-          <label>Título:</label>
-          <input 
-            type="text" 
-            [(ngModel)]="nuevoItem.titulo" 
-            placeholder="¿Qué vas a hacer?"
-            class="title-input"
-          >
-        </div>
-        <div class="form-group">
-          <label>Categoría:</label>
-          <select [(ngModel)]="nuevoItem.categoria" class="category-select">
-            <option *ngFor="let cat of categorias" [value]="cat">
-              {{ cat | titlecase }}
-            </option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Prioridad:</label>
-          <select [(ngModel)]="nuevoItem.prioridad" class="priority-select">
-            <option value="alta">Alta 🔥</option>
-            <option value="media">Media ⚡</option>
-            <option value="baja">Baja 💧</option>
-          </select>
-        </div>
-        <div class="form-group full-width">
-          <label>Descripción/Notas:</label>
-          <textarea 
-            [(ngModel)]="nuevoItem.descripcion" 
-            placeholder="Detalles adicionales..."
-            class="description-textarea"
-            rows="3"
-          ></textarea>
-        </div>
+    <button (click)="abrirModal()" class="add-btn-large">
+      <lucide-icon [img]="Plus" [size]="24"></lucide-icon>
+      <div class="add-btn-content">
+        <span class="add-btn-title">Nueva Actividad</span>
+        <span class="add-btn-subtitle">Agrega una nueva tarea a tu agenda</span>
       </div>
-      <button (click)="agregarItem()" class="add-btn">
-        <span class="btn-icon">📅</span>
-        Agregar a la Agenda
-      </button>
-    </div>
+    </button>
   </div>
 
   <!-- Lista de Itinerario -->
   <div class="timeline">
-    <h3 class="timeline-title">📋 Itinerario del Día</h3>
+    <h3 class="timeline-title">
+      <lucide-icon [img]="ListTodo" [size]="28"></lucide-icon>
+      Itinerario del Día
+    </h3>
     
     <div class="timeline-items">
       <div 
@@ -138,7 +162,7 @@
         <div class="time-section">
           <span class="time-display">{{ item.hora }}</span>
           <div class="priority-badge" [style.background-color]="getColorPrioridad(item.prioridad)">
-            {{ getIconoPrioridad(item.prioridad) }}
+            <lucide-icon [img]="getIconoPrioridad(item.prioridad)" [size]="18"></lucide-icon>
           </div>
         </div>
         
@@ -155,20 +179,30 @@
               <label [for]="'item-' + item.id" class="custom-checkbox"></label>
             </div>
             <h4 class="item-title">{{ item.titulo }}</h4>
-            <button 
-              (click)="eliminarItem(item.id)" 
-              class="delete-btn"
-              title="Eliminar actividad"
-            >
-              🗑️
-            </button>
+            <div class="item-actions">
+              <button
+                (click)="abrirModal(item)"
+                class="edit-btn"
+                title="Editar actividad"
+              >
+                <lucide-icon [img]="Edit" [size]="18"></lucide-icon>
+              </button>
+              <button
+                (click)="eliminarItem(item.id)"
+                class="delete-btn"
+                title="Eliminar actividad"
+              >
+                <lucide-icon [img]="Trash2" [size]="18"></lucide-icon>
+              </button>
+            </div>
           </div>
           
           <div class="item-meta">
-            <span 
+            <span
               class="category-tag"
               [style.background-color]="getColorCategoria(item.categoria)"
             >
+              <lucide-icon [img]="getIconoCategoria(item.categoria)" [size]="14"></lucide-icon>
               {{ item.categoria | titlecase }}
             </span>
           </div>
@@ -182,7 +216,9 @@
 
     <!-- Estado vacío -->
     <div *ngIf="itemsFiltrados.length === 0" class="empty-state">
-      <div class="empty-icon">📭</div>
+      <div class="empty-icon">
+        <lucide-icon [img]="Calendar" [size]="80"></lucide-icon>
+      </div>
       <h3>No hay actividades programadas</h3>
       <p>¡Agrega tu primera actividad para comenzar!</p>
     </div>
@@ -190,7 +226,10 @@
 
   <!-- Resumen del Día -->
   <div class="daily-summary" *ngIf="agendaItems.length > 0">
-    <h4>📊 Resumen del Día</h4>
+    <h4>
+      <lucide-icon [img]="TrendingUp" [size]="20"></lucide-icon>
+      Resumen del Día
+    </h4>
     <div class="progress-container">
       <div class="progress-bar">
         <div 
@@ -201,6 +240,98 @@
       <span class="progress-text">
         {{ ((tareasCompletadas / agendaItems.length) * 100).toFixed(0) }}% del día completado
       </span>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para agregar/editar actividad -->
+<div *ngIf="mostrarModal" class="modal-overlay" (click)="cerrarModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>
+        <lucide-icon [img]="itemEditando ? Edit : Plus" [size]="24"></lucide-icon>
+        {{ itemEditando ? 'Editar Actividad' : 'Nueva Actividad' }}
+      </h2>
+      <button (click)="cerrarModal()" class="modal-close">
+        <lucide-icon [img]="X" [size]="24"></lucide-icon>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>
+            <lucide-icon [img]="Clock" [size]="16"></lucide-icon>
+            Hora
+          </label>
+          <input
+            type="time"
+            [(ngModel)]="nuevoItem.hora"
+            class="modal-input"
+          >
+        </div>
+
+        <div class="form-group full-width">
+          <label>
+            <lucide-icon [img]="Check" [size]="16"></lucide-icon>
+            Título
+          </label>
+          <input
+            type="text"
+            [(ngModel)]="nuevoItem.titulo"
+            placeholder="¿Qué vas a hacer?"
+            class="modal-input"
+          >
+        </div>
+
+        <div class="form-group">
+          <label>
+            <lucide-icon [img]="Filter" [size]="16"></lucide-icon>
+            Categoría
+          </label>
+          <select [(ngModel)]="nuevoItem.categoria" class="modal-select">
+            <option *ngFor="let cat of categorias" [value]="cat">
+              {{ cat | titlecase }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>
+            <lucide-icon [img]="Flame" [size]="16"></lucide-icon>
+            Prioridad
+          </label>
+          <select [(ngModel)]="nuevoItem.prioridad" class="modal-select">
+            <option value="alta">Alta</option>
+            <option value="media">Media</option>
+            <option value="baja">Baja</option>
+          </select>
+        </div>
+
+        <div class="form-group full-width">
+          <label>
+            <lucide-icon [img]="ListTodo" [size]="16"></lucide-icon>
+            Descripción
+          </label>
+          <textarea
+            [(ngModel)]="nuevoItem.descripcion"
+            placeholder="Detalles adicionales..."
+            class="modal-textarea"
+            rows="4"
+          ></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button (click)="cerrarModal()" class="btn-cancel">
+        <lucide-icon [img]="X" [size]="18"></lucide-icon>
+        Cancelar
+      </button>
+      <button (click)="guardarActividad()" class="btn-save">
+        <lucide-icon [img]="Check" [size]="18"></lucide-icon>
+        {{ itemEditando ? 'Actualizar' : 'Guardar' }}
+      </button>
     </div>
   </div>
 </div>
